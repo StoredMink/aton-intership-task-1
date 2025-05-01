@@ -40,8 +40,7 @@ cd nginx-ansible-deployment
 1. **Подготовьте файл инвентаризации**:
    
    Отредактируйте файл `inventory.ini`, чтобы включить в него данные о вашем сервере:
-   ```ini
- [webservers]
+```ini
  webserver ansible_host=YOURIP ansible_user=root ansible_password="YOURPASSWD"
  ```
 
