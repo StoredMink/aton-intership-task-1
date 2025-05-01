@@ -84,13 +84,10 @@ cd nginx-ansible-deployment
 ### 4. Запустите Playbook
 
 ``bash
-# Сначала запустите в режиме проверки (изменения вноситься не будут)
 ansible-playbook -i inventory.ini nginx_deployment.yml --check
 
-# Затем запустите фактическое развертывание
 ansible-playbook -i inventory.ini nginx_deployment.yml
 ```
-
 
 ## Что делает этот плейбук
 
