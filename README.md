@@ -30,7 +30,7 @@ nginx-ansible-deployment/
 
 ### 1. Клонируйте/создайте проект
 
-``bash
+```bash
 mkdir -p nginx-ansible-deployment
 cd nginx-ansible-deployment
 ```
@@ -40,7 +40,7 @@ cd nginx-ansible-deployment
 1. **Подготовьте файл инвентаризации**:
    
    Отредактируйте файл `inventory.ini`, чтобы включить в него данные о вашем сервере:
-   ``ini
+   ```ini
  [webservers]
  webserver ansible_host=YOURIP ansible_user=root ansible_password="YOURPASSWD"
  ```
@@ -58,7 +58,7 @@ cd nginx-ansible-deployment
 3. **Подготовка веб-контента**:
    
    Скопируйте файлы вашего сайта:
-   ``bash
+  ```bash
  mkdir -p files/html/images
  cp /path/to/your/website/index.html files/html/
  ```
@@ -68,7 +68,7 @@ cd nginx-ansible-deployment
 1. **Просмотрите переменные** в файле `nginx_deployment.yml`:
    
    Настройте любые переменные в соответствии с вашим окружением:
- ``yaml
+ ```yaml
  vars:
  nginx_port_http: 80
  nginx_port_https: 443
@@ -83,7 +83,7 @@ cd nginx-ansible-deployment
 
 ### 4. Запустите Playbook
 
-``bash
+```bash
 ansible-playbook -i inventory.ini nginx_deployment.yml --check
 
 ansible-playbook -i inventory.ini nginx_deployment.yml
