@@ -4,21 +4,21 @@
 
 ## Структура проекта
 
-``
+```
 nginx-ansible-deployment/
-├──── ansible.cfg # Конфигурация Ansible
-├──── inventory.ini # Файл инвентаризации сервера
-├──── nginx_deployment. yml # Основной плейбук Ansible
-├──── files/ # Статические файлы для копирования на сервер
-│ ├──── html/ # Веб-контент
-│ │ ├──── index. html # Главная веб-страница
-│ │ └──── images/ # Файлы изображений
-│ └──── ssl/ # SSL-сертификаты
-│ ├──── mydomain. crt # SSL сертификат
-│ └──── mydomain.key # SSL закрытый ключ
-└──── templates/ # Jinja2 шаблоны
- └──── nginx.conf.j2 # Nginx шаблон конфигурации
-```''
+├── ansible.cfg               # Ansible configuration
+├── inventory.ini             # Server inventory file
+├── nginx_deployment.yml      # Main Ansible playbook
+├── files/                    # Static files to be copied to the server
+│   ├── html/                 # Web content
+│   │   ├── index.html        # Main web page
+│   │   └── images/           # Image files
+│   └── ssl/                  # SSL certificates
+│       ├── mydomain.crt      # SSL certificate
+│       └── mydomain.key      # SSL private key
+└── templates/                # Jinja2 templates
+    └── nginx.conf.j2         # Nginx configuration template
+```
 
 ## Предварительные условия
 
@@ -33,7 +33,7 @@ nginx-ansible-deployment/
 ``bash
 mkdir -p nginx-ansible-deployment
 cd nginx-ansible-deployment
-``''
+```
 
 ### 2. Настройте окружение
 
@@ -48,11 +48,12 @@ cd nginx-ansible-deployment
 2. **Разместите SSL-сертификаты**:
    
    Скопируйте ваши SSL-сертификаты в каталог `files/ssl/`:
- ``bash
- mkdir -p files/ssl
- cp /path/to/your/certificate.crt files/ssl/mydomain.crt
- cp /path/to/your/private.key files/ssl/mydomain.key
- ````
+
+   ```bash
+   mkdir -p files/ssl
+   cp /path/to/your/certificate.crt files/ssl/mydomain.crt
+   cp /path/to/your/private.key files/ssl/mydomain.key
+   ```
 
 3. **Подготовка веб-контента**:
    
@@ -76,7 +77,7 @@ cd nginx-ansible-deployment
  nginx_ssl_dir: /etc/nginx/ssl
  nginx_ssl_cert: mydomain.crt
  nginx_ssl_key: mydomain.key
- ```''
+```
 
 2. **При необходимости настройте конфигурацию Nginx** в файле `templates/nginx.conf.j2`.
 
@@ -88,7 +89,7 @@ ansible-playbook -i inventory.ini nginx_deployment.yml --check
 
 # Затем запустите фактическое развертывание
 ansible-playbook -i inventory.ini nginx_deployment.yml
-```''
+```
 
 
 ## Что делает этот плейбук
