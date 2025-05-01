@@ -1,0 +1,108 @@
+---
+- name: Configure Nginx Web Server
+  hosts: webservers  
+  become: yes       # Run tasks with sudo privileges
+  vars:
+    nginx_port_http: 80
+    nginx_port_https: 443
+    nginx_server_name: localhost
+    nginx_html_root: /usr/share/nginx/html
+    nginx_ssl_dir: /etc/nginx/ssl
+    nginx_conf_dir: /etc/nginx
+    nginx_ssl_cert: mydomain.crt
+    nginx_ssl_key: mydomain.key
+    nginx_conf_file: /etc/nginx/nginx.conf
+
+  tasks:
+    - name: Install Nginx package
+      package:
+        name: nginx
+        state: present
+
+    - name: Create SSL directory if it doesn't exist
+      file:
+        path: "{{ nginx_ssl_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Create HTML directory if it doesn't exist
+      file:
+        path: "{{ nginx_html_root }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy SSL certificate
+      copy:
+        src: "files/ssl/{{ nginx_ssl_cert }}"
+        dest: "{{ nginx_ssl_dir }}/{{ nginx_ssl_cert }}"
+        mode: '0644'
+      notify: Restart Nginx
+
+    - name: Copy SSL key
+      copy:
+        src: "files/ssl/{{ nginx_ssl_key }}"
+        dest: "{{ nginx_ssl_dir }}/{{ nginx_ssl_key }}"
+        mode: '0600'
+      notify: Restart Nginx
+
+    - name: Copy index.html file
+      copy:
+        src: files/html/index.html
+        dest: "{{ nginx_html_root }}/index.html"
+        mode: '0644'
+      notify: Restart Nginx
+
+    - name: Copy gifs
+      copy:
+        src: files/html/lain-1.gif
+        dest: "{{ nginx_html_root }}/lain-1.gif"
+        mode: '0644'
+      notify: Restart Nginx
+
+    - name: Copy gifs_2
+      copy:
+        src: files/html/lain-background.gif
+        dest: "{{ nginx_html_root }}/lain-background.gif"
+        mode: '0644'
+      notify: Restart Nginx
+
+    - name: Configure Nginx
+      template:
+        src: templates/nginx.conf.j2
+        dest: "{{ nginx_conf_file }}"
+        mode: '0644'
+      notify: Restart Nginx
+
+    - name: Enable and start Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Check if Nginx is listening on HTTP port
+      wait_for:
+        port: "{{ nginx_port_http }}"
+        state: started
+        timeout: 10
+      register: http_check
+      ignore_errors: yes
+
+    - name: Check if Nginx is listening on HTTPS port
+      wait_for:
+        port: "{{ nginx_port_https }}"
+        state: started
+        timeout: 10
+      register: https_check
+      ignore_errors: yes
+
+    - name: Verify Nginx service status
+      debug:
+        msg: >
+          HTTP port check: {{ 'Success' if http_check is succeeded else 'Failed' }}
+          HTTPS port check: {{ 'Success' if https_check is succeeded else 'Failed' }}
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted

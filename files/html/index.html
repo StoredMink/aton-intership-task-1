@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>homepage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .background-gif {
+            position: fixed;
+            top: -40px;
+            left: -40px;
+            width: calc(100% + 60px);
+            height: calc(100% + 60px);
+            object-fit: cover;
+            filter: blur(13px) brightness(20%);
+            z-index: 1;
+        }
+
+        
+        .centered-gif-container {
+            position: fixed;
+            top: -36%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2; /* This ensures it's above the background GIF */
+            filter: blur(1px);
+        }
+        
+        .centered-gif {
+            max-width: clamp(180px, 16vw, 250px);
+            object-fit: contain;
+        }
+        
+        .text-block {
+            position: fixed;
+            top: 300px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-family: "Oswald", sans-serif;
+            /* Responsive font-size using calc() with minimum size */
+            font-size: calc(23px + 0.5vw); /* Base size + viewport-relative size */
+            padding: 20px;
+            z-index: 3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            line-height: 0.9;
+            letter-spacing: 2px;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        
+        .text-block h1 {
+            /* Larger font for headings with minimum size */
+            font-size: calc(24px + 0.8vw);
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+        }
+        
+        .text-block p {
+            margin-bottom: 20px;
+        }
+        
+        /* Link styling */
+        .text-block a {
+            color: #00ffcc;
+            text-decoration: none;
+            font-family: "Oswald", sans-serif;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+            padding: 2px 6px;
+        }
+        
+        .text-block a:hover {
+            color: #ffffff;
+            background-color: rgba(0, 255, 204, 0.2);
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.8);
+            letter-spacing: 4px;
+        }
+        
+        /* Language selection styling */
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 4;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .language-selector a {
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-family: 'Special Gothic Expanded One', serif;
+            font-size: calc(14px + 0.2vw); /* Responsive font size */
+            letter-spacing: 2px;
+        }
+        
+        .language-selector a:hover, 
+        .language-selector a.active {
+            background-color: rgba(0, 255, 204, 0.3);
+            color: #00ffcc;
+        }
+        
+/* Language content sections */
+        .lang-content {
+            display: none; /* Hide all language content by default */
+        }
+
+/* Show English by default */
+        #english:target ~ .text-block .lang-content.english,
+          .text-block .lang-content.english {
+            display: block;
+        }
+
+/* Show specific language content when targeted */
+        #english:target ~ .text-block .lang-content.english {
+            display: block;
+        }
+
+/* Hide English and show Russian when #russian is targeted */
+        #russian:target ~ .text-block .lang-content.english {
+            display: none;
+        }
+
+        #russian:target ~ .text-block .lang-content.russian {
+            display: block;
+        }
+        /* Media queries for better mobile responsiveness */
+        @media (max-width: 768px) {
+            .text-block {
+                padding: 15px;
+                top: 300px;
+                font-size: 18px;
+            }
+            
+            .text-block h1 {
+                font-size: 26px;
+                margin-bottom: 20px;
+            }
+            
+            .language-selector {
+                padding: 8px;
+            }
+            
+            .language-selector a {
+                padding: 4px 8px;
+                font-size: 16px;
+            }
+            
+            .contact-info {
+                bottom: 10px;
+                right: 10px;
+                padding: 12px;
+                font-size: 16px;
+                max-width: 250px;
+            }
+            
+            .contact-info h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+        }
+        
+        /* Even smaller screens (phones) */
+        @media (max-width: 480px) {
+            .text-block {
+                padding: 10px;
+                font-size: 20px;
+                letter-spacing: 1px;
+                top: 300px;
+            }
+            
+            .text-block h1 {
+                font-size: 28px;
+                letter-spacing: 2px;
+            }
+            
+            .centered-gif {
+                max-width: 95%;
+            }
+            
+            .contact-info {
+                max-width: 220px;
+                font-size: 14px;
+            }
+            
+            .contact-info h3 {
+                font-size: 16px;
+            }
+        }
+
+        /* Contact information styling */
+        .contact-info {
+            position: fixed;
+            top: -20%
+            bottom: 70px;
+            left: 45px;
+            z-index: 4;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Special Gothic Expanded One', serif;
+            font-size: calc(14px + 0.3vw);
+            text-align: left;
+            line-height: 1.6;
+            letter-spacing: 1px;
+            max-width: 550px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border-left: 3px solid #00ffcc;
+        }
+        
+        .contact-info h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #00ffcc;
+            letter-spacing: 2px;
+            font-size: calc(16px + 0.3vw);
+        }
+        
+        .contact-info p {
+            margin: 5px 0;
+        }
+        
+.contact-info .contact-item {
+    display: flex;
+    justify-content: flex-start;  /* This will align content to the left */
+    align-items: center;
+    margin-bottom: 8px;
+}
+        
+        .contact-info .contact-label {
+            margin-right: 10px;
+            opacity: 0.8;
+            text-align: left;
+        }
+        
+
+    </style>
+</head>
+<body>
+
+    <div class="contact-info">
+        <h3>Contact Me</h3>
+        <div class="contact-item">
+            <span class="contact-label">Email </span>
+            <span>ruslan_gusev@proton.me</span>
+        </div>
+        <div class="contact-item">
+            <span class="contact-label">Telegram </span>
+            <span>@ilovebunnies_98</span>
+        </div>
+    </div>
+    <!-- Empty divs with ids for language targeting -->
+    <div id="english"></div>
+    <div id="russian"></div>
+    <!-- Background blurred GIF (stretched to full screen) -->
+    <img src="lain-background.gif" alt="Background GIF" class="background-gif">
+    
+    <!-- Centered GIF with original aspect ratio -->
+    <div class="centered-gif-container">
+        <img src="lain-1.gif" alt="Centered GIF" class="centered-gif">
+    </div>
+    
+    <div class="language-selector">
+        <a href="#english">EN</a>
+        <a href="#russian">RU</a>
+    </div>
+    <div class="text-block">
+      <div class="lang-content english">
+          <h1>Hello!</h1>
+          <p>My name is Ruslan and I'm an aspiring DevOps engineer. I created this site as my portfolio.</p>
+          <p>Below you can see the list of my projects.</p>
+          <p>1. Simple messaging system built with Python, Redis, Nginx, MySQL and Docker. <a href="https://github.com/StoredMink/Messaging-App" target="_blank">GitHub page</a></p>
+          <p>2. This page! It runs on Nginx via Docker. Frontend is HTML. Also it has working SSL certs.</p>
+          <p>3. A simple hardware resource monitoring system with Grafana and Premetheus. <a href="https://github.com/StoredMink/Simple-Monitroring-Setup" target="_blank">GitHub page</a></p>
+          <p>4. Plans to practice the CI/CD tools Jenkins and Gitlab</a></p>          
+      </div>
+    
+      <div class="lang-content russian">
+          <h1>Привет!</h1>
+          <p>Меня зовут Руслан, я начинающий DevOps-инженер. Этот сайт я создал в качестве своего портфолио.</p>
+          <p>Ниже вы можете увидеть список моих проектов.</p>
+          <p>1. Система обмена сообщениями. Стек: Python, Redis, Nginx, MySQL и Docker. <a href="https://github.com/StoredMink/Messaging-App" target="_blank">Страница на гитхабе</a></p>
+          <p>2. Эта страница! Работает на Nginx через Docker. Фронтенд - это HTML. Также на ней есть рабочие SSL-сертификаты.</p>
+          <p>3. Простая система мониторига ресурсов "железа" из Grafana и Premetheus. <a href="https://github.com/StoredMink/Simple-Monitroring-Setup" target="_blank">Страница на гитхабе</a></p>
+          <p>4. В планах попрактиковать CI/CD инструменты Jenkins и Gitlab</p>
+      </div>
+    </div>
+</body>
+</html>
